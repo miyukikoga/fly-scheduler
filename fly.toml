@@ -1,0 +1,27 @@
+# fly.toml app configuration file generated for miyuc-fly-scheduler on 2024-06-04T07:46:59+09:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'miyuc-fly-scheduler'
+primary_region = 'nrt'
+
+[build]
+
+[processes]
+  cron = 'supercronic /app/crontab'
+  web = 'npm run start'
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['web']
+
+[[vm]]
+  size = 'shared-cpu-1x'
+  cpus = 1
+  memory_mb = 256
+  processes = ['cron', 'web']
